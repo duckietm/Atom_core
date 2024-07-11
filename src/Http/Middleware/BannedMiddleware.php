@@ -2,8 +2,8 @@
 
 namespace Atom\Core\Http\Middleware;
 
-use Closure;
 use Atom\Core\Models\Ban;
+use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,7 +16,7 @@ class BannedMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->user()) {
+        if (! $request->user()) {
             return $next($request);
         }
 
@@ -29,11 +29,11 @@ class BannedMiddleware
             ->where('ban_expire', '>', time())
             ->exists();
 
-        if (!$ban && $request->routeIs('banned')) {
+        if (! $ban && $request->routeIs('banned')) {
             return redirect()->route('users.me');
         }
 
-        if ($ban && (!$request->routeIs('banned') && !$request->routeIs('help-center.*') && !$request->routeIs('logout'))) {
+        if ($ban && (! $request->routeIs('banned') && ! $request->routeIs('help-center.*') && ! $request->routeIs('logout'))) {
             return redirect()->route('banned');
         }
 

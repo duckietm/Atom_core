@@ -3,9 +3,9 @@
 namespace Atom\Core\Http\Controllers;
 
 use Atom\Core\Models\Ban;
-use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class BannedController extends Controller
 {

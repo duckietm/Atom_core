@@ -13,7 +13,7 @@ class LogoutController extends Controller
     public function __invoke(Request $request)
     {
         $request->session()->invalidate();
- 
+
         $request->session()->regenerateToken();
 
         return redirect()->route('login.index');
