@@ -37,15 +37,6 @@ class BannedMiddleware
             return redirect()->route('banned');
         }
 
-        // $ban = $request->user()
-        //     ->bans()
-        //     ->where('timestamp', '<', time())
-        //     ->where('ban_expire', '>', time())
-        //     ->first() ?: $ban = Ban::where('ip', $request->ip())
-        //     ->where('timestamp', '<', time())
-        //     ->where('ban_expire', '>', time())
-        //     ->first();
-
         return $next($request);
     }
 }
