@@ -180,9 +180,9 @@ class User extends Authenticatable
     /**
      * Get the settings for the user.
      */
-    public function settings(): HasMany
+    public function settings(): HasOne
     {
-        return $this->hasMany(UserSetting::class, 'user_id');
+        return $this->hasOne(UserSetting::class, 'user_id');
     }
 
     /**
