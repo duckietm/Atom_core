@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Middleware\Authenticate;
-use Atom\Core\Http\Controllers\ForgotPasswordController;
+use Illuminate\Support\Facades\Route;
 use Atom\Core\Http\Controllers\LoginController;
+use Atom\Core\Http\Controllers\BannedController;
 use Atom\Core\Http\Controllers\LogoutController;
 use Atom\Core\Http\Controllers\RegisterController;
 use Atom\Core\Http\Controllers\ResetPasswordController;
-use Illuminate\Support\Facades\Route;
+use Atom\Core\Http\Controllers\ForgotPasswordController;
 
 // @todo - Create Banned Middleware...
 
@@ -26,6 +27,10 @@ Route::middleware('web')->group(function () {
     Route::resource('register', RegisterController::class)
         ->middleware('guest')
         ->only(['index', 'store']);
+
+    Route::get('banned', BannedController::class)
+        ->middleware(Authenticate::using('sanctum'))
+        ->name('banned');
 
     Route::get('logout', LogoutController::class)
         ->middleware(Authenticate::using('sanctum'))
