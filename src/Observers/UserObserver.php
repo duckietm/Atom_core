@@ -13,7 +13,8 @@ class UserObserver
      */
     public function creating(User $user): void
     {
-        $settings = WebsiteSetting::pluck('value', 'key');
+        $settings = WebsiteSetting::whereIn('key', ['start_motto', 'start_look', 'start_credits', 'hotel_home_room'])
+            ->pluck('value', 'key');
 
         $user->account_created = time();
         $user->account_created = time();
@@ -33,7 +34,8 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        $settings = WebsiteSetting::pluck('value', 'key');
+        $settings = WebsiteSetting::whereIn('key', ['give_hc_on_register', 'hc_on_register_duration', 'start_duckets', 'start_diamonds', 'start_points'])
+            ->pluck('value', 'key');
 
         $user->setting()->create([
             'last_hc_payday' => $settings->get('give_hc_on_register') == '1' ? now()->addYears(10)->unix() : 0,
