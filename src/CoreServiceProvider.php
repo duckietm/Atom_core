@@ -3,38 +3,38 @@
 namespace Atom\Core;
 
 use Illuminate\Support\Facades\URL;
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-class CoreServiceProvider extends PackageServiceProvider
+class CoreServiceProvider extends ServiceProvider
 {
     /**
-     * Configure the package.
+     * Register any application services.
+     *
+     * @return void
      */
-    public function configurePackage(Package $package): void
+    public function register()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->mergeConfigFrom(
+            path: __DIR__.'/../config/core.php',
+            key: 'core'
+        );
 
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'core');
+        $this->loadMigrationsFrom(
+            paths: __DIR__.'/../database/migrations'
+        );
 
-        $package
-            ->name('core')
-            ->hasConfigFile()
-            ->hasRoute('web')
-            ->hasViews()
-            ->hasTranslations()
-            ->runsMigrations();
+        $this->loadRoutesFrom(
+            path: __DIR__.'/../routes/web.php'
+        );
     }
 
     /**
-     * Bootstrap the application services.
+     * Bootstrap any application services.
      *
      * @return void
      */
     public function boot()
     {
-        parent::boot();
-
         if (config('app.force_https')) {
             URL::forceScheme('https');
         }

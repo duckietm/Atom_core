@@ -9,12 +9,14 @@ use Atom\Core\Http\Controllers\RegisterController;
 use Atom\Core\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
-// @todo - Create Banned Middleware...
-
 Route::middleware('web')->group(function () {
     Route::resource('login', LoginController::class)
         ->middleware('guest')
         ->only(['index', 'store']);
+
+    Route::get('login', [LoginController::class, 'index'])
+        ->middleware('guest')
+        ->name('login');
 
     Route::resource('forgot-password', ForgotPasswordController::class)
         ->middleware('guest')
