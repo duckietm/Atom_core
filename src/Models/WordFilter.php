@@ -16,7 +16,7 @@ class WordFilter extends Model
     /**
      * Determine if the model should be timestamped.
      *
-     * @var boolean
+     * @var bool
      */
     public $timestamps = false;
 

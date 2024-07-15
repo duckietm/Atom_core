@@ -31,7 +31,7 @@ class ChatlogRoom extends Model
     /**
      * The "type" of the auto-incrementing ID.
      *
-     * @var boolean
+     * @var bool
      */
     public $incrementing = false;
 
