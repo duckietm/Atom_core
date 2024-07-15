@@ -266,4 +266,28 @@ class Permission extends Model
     {
         return $this->hasMany(WebsiteShopArticle::class, 'give_rank');
     }
+
+    /**
+     * Set the Badge attribute.
+     */
+    public function setBadgeAttribute($value)
+    {
+        $this->attributes['badge'] = is_null($value) ? '' : $value;
+    }
+
+    /**
+     * Set the prefix attribute.
+     */
+    public function setPrefixAttribute($value)
+    {
+        $this->attributes['prefix'] = is_null($value) ? '' : $value;
+    }
+
+    /**
+     * Set the prefix color attribute.
+     */
+    public function setPrefixColorAttribute($value)
+    {
+        $this->attributes['prefix_color'] = is_null($value) ? '' : $value;
+    }
 }
