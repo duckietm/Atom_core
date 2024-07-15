@@ -2,11 +2,11 @@
 
 namespace Atom\Core\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Atom\Core\Observers\CatalogPageObserver;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy([CatalogPageObserver::class])]
 class CatalogPage extends Model

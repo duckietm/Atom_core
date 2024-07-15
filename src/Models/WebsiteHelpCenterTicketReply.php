@@ -2,10 +2,10 @@
 
 namespace Atom\Core\Models;
 
+use Atom\Core\Observers\WebsiteHelpCenterTicketReplyObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Atom\Core\Observers\WebsiteHelpCenterTicketReplyObserver;
 
 #[ObservedBy([WebsiteHelpCenterTicketReplyObserver::class])]
 class WebsiteHelpCenterTicketReply extends Model

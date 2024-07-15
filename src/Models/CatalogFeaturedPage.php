@@ -57,6 +57,6 @@ class CatalogFeaturedPage extends Model
      */
     public function setProductNameAttribute($value)
     {
-        $this->attributes['product_name'] = !is_null($value) ? $value : '';
+        $this->attributes['product_name'] = ! is_null($value) ? $value : '';
     }
 }

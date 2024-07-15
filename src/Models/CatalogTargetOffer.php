@@ -54,6 +54,6 @@ class CatalogTargetOffer extends Model
      */
     public function setVarsAttribute($value)
     {
-        $this->attributes['vars'] = !is_null($value) ? $value : '';
+        $this->attributes['vars'] = ! is_null($value) ? $value : '';
     }
 }
