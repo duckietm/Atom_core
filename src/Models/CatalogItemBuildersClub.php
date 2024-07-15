@@ -5,14 +5,14 @@ namespace Atom\Core\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CatalogItem extends Model
+class CatalogItemBuildersClub extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'catalog_items';
+    protected $table = 'catalog_items_bc';
 
     /**
      * Determine if the model should be timestamped.
@@ -30,18 +30,8 @@ class CatalogItem extends Model
         'item_ids',
         'page_id',
         'catalog_name',
-        'cost_credits',
-        'cost_points',
-        'points_type',
-        'amount',
-        'limited_stack',
-        'limited_sells',
         'order_number',
-        'offer_id',
-        'song_id',
         'extradata',
-        'have_offer',
-        'club_only',
     ];
 
     /**
@@ -49,7 +39,7 @@ class CatalogItem extends Model
      */
     public function page(): BelongsTo
     {
-        return $this->belongsTo(CatalogPage::class, 'page_id');
+        return $this->belongsTo(CatalogPageBuildersClub::class, 'page_id');
     }
 
     /**

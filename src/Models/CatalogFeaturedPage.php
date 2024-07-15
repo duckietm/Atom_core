@@ -5,14 +5,14 @@ namespace Atom\Core\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CatalogItem extends Model
+class CatalogFeaturedPage extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'catalog_items';
+    protected $table = 'catalog_featured_pages';
 
     /**
      * Determine if the model should be timestamped.
@@ -22,30 +22,30 @@ class CatalogItem extends Model
     public $timestamps = false;
 
     /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'slot_id';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'item_ids',
+        'slot_id',
+        'image',
+        'caption',
+        'type',
+        'expire_timestamp',
+        'page_name',
         'page_id',
-        'catalog_name',
-        'cost_credits',
-        'cost_points',
-        'points_type',
-        'amount',
-        'limited_stack',
-        'limited_sells',
-        'order_number',
-        'offer_id',
-        'song_id',
-        'extradata',
-        'have_offer',
-        'club_only',
+        'product_name',
     ];
 
     /**
-     * Get the page that owns the catalog item.
+     * Get the page that owns the featured page.
      */
     public function page(): BelongsTo
     {
@@ -53,10 +53,10 @@ class CatalogItem extends Model
     }
 
     /**
-     * Set the extradata.
+     * Set the page name attribute.
      */
-    public function setExtradataAttribute($value)
+    public function setProductNameAttribute($value)
     {
-        $this->attributes['extradata'] = is_null($value) ? '' : $value;
+        $this->attributes['product_name'] = !is_null($value) ? $value : '';
     }
 }

@@ -51,4 +51,28 @@ class ItemBase extends Model
         'effect_id_female',
         'clothing_on_walk',
     ];
+
+    /**
+     * Set the multiheight attribute.
+     */
+    public function setMultiheightAttribute($value)
+    {
+        $this->attributes['multiheight'] = is_null($value) ? '' : $value;
+    }
+
+    /**
+     * Set the customparams attribute.
+     */
+    public function setCustomparamsAttribute($value)
+    {
+        $this->attributes['customparams'] = is_null($value) ? '' : $value;
+    }
+
+    /**
+     * Set the clothing_on_walk attribute.
+     */
+    public function setClothingOnWalkAttribute($value)
+    {
+        $this->attributes['clothing_on_walk'] = is_null($value) ? '' : $value;
+    }
 }
