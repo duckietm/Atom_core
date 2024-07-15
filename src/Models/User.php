@@ -306,4 +306,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(WebsiteUserGuestbook::class, 'profile_id');
     }
+
+    /**
+     * Get the home room for the user.
+     */
+    public function homeRoom(): BelongsTo
+    {
+        return $this->belongsTo(Room::class, 'home_room');
+    }
 }
