@@ -314,4 +314,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Room::class, 'home_room');
     }
+
+    /**
+     * Get the badges for the user.
+     */
+    public function badges(): HasMany
+    {
+        return $this->hasMany(UserBadge::class, 'user_id');
+    }
 }
