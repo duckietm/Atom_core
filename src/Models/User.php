@@ -314,4 +314,40 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Room::class, 'home_room');
     }
+
+    public function currency(string $currency): int
+    {
+        $type = match ($currency) {
+            'duckets' => 0,
+            'diamonds' => 5,
+            'points' => 101,
+            default => 0,
+        };
+
+        return $this->currencies()
+            ->where('type', $type)
+            ->first()->amount ?? 0;
+    }
+
+    public function getOnlineFriends(int $total = 10)
+    {
+        return $this->friends()
+            ->select(['user_two_id', 'users.id', 'users.username', 'users.look', 'users.motto', 'users.last_online'])
+            ->join('users', 'users.id', '=', 'user_two_id')
+            ->where('users.online', '1')
+            ->inRandomOrder()
+            ->limit($total)
+            ->get();
+    }
+
+    public function referralsNeeded()
+    {
+        $referrals = 0;
+
+        if (! is_null($this->userReferral)) {
+            $referrals = $this->userReferral->referrals_total;
+        }
+
+        return setting('referrals_needed') - $referrals;
+    }
 }
