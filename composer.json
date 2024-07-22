@@ -11,7 +11,8 @@
     "authors": [],
     "require": {
         "php": "^8.2",
-        "illuminate/contracts": "^10.0||^11.0"
+        "calebporzio/sushi": "*",
+        "illuminate/contracts": "*"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
