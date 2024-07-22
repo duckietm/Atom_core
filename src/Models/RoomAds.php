@@ -2,9 +2,9 @@
 
 namespace Atom\Core\Models;
 
-use Sushi\Sushi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Sushi\Sushi;
 
 class RoomAds extends Model
 {
@@ -17,7 +17,7 @@ class RoomAds extends Model
     {
         static::deleted(fn (RoomAds $roomAds) => Storage::disk('room_backgrounds')->delete($roomAds->file));
     }
-    
+
     /**
      * Get the rows for the table.
      *
