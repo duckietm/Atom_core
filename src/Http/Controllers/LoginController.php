@@ -32,11 +32,20 @@ class LoginController extends Controller
                 ->withInput()
                 ->withErrors(['username' => 'The provided credentials are incorrect.']);
         }
+
+        if (app()->isDownForMaintenance() && $user->rank < 4) {
+            return redirect()->back()
+                ->withErrors(['username' => 'The website is currently down for maintenance.']);
+        }
+
+        $secret = @file_get_contents(storage_path('framework/down'));
         
         $user->update(['last_login' => time(), 'ip_current' => $request->ip()]);
 
         Auth::login($user);
 
-        return redirect()->route('users.me');
+        return app()->isDownForMaintenance()
+            ? redirect(url(json_decode($secret)->secret))
+            : redirect()->route('users.me');
     }
 }

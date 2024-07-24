@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('web')->group(function () {
     Route::resource('login', LoginController::class)
-        ->middleware('guest')
         ->only(['index', 'store']);
 
     Route::get('login', [LoginController::class, 'index'])

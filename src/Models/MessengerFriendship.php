@@ -37,7 +37,7 @@ class MessengerFriendship extends Model
     /**
      * Get the user that is the first user in the friendship.
      */
-    public function friend(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_one_id', 'id');
     }
@@ -45,7 +45,7 @@ class MessengerFriendship extends Model
     /**
      * Get the user that is the second user in the friendship.
      */
-    public function user(): BelongsTo
+    public function friend(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_two_id', 'id');
     }

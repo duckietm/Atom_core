@@ -158,7 +158,7 @@ class User extends Authenticatable
      */
     public function friends(): HasMany
     {
-        return $this->hasMany(MessengerFriendship::class, 'user_two_id');
+        return $this->hasMany(MessengerFriendship::class, 'user_one_id');
     }
 
     /**
