@@ -32,6 +32,8 @@ class LoginController extends Controller
                 ->withInput()
                 ->withErrors(['username' => 'The provided credentials are incorrect.']);
         }
+        
+        $user->update(['last_login' => time(), 'ip_current' => $request->ip()]);
 
         Auth::login($user);
 

@@ -17,7 +17,6 @@ class UserObserver
             ->pluck('value', 'key');
 
         $user->account_created = time();
-        $user->account_created = time();
         $user->last_login = time();
         $user->motto = $settings->get('start_motto');
         $user->look = $settings->get('start_look');
