@@ -10,12 +10,12 @@ use Atom\Core\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('web')->group(function () {
-    Route::resource('login', LoginController::class)
-        ->only(['index', 'store']);
-
     Route::get('login', [LoginController::class, 'index'])
         ->middleware('guest')
         ->name('login');
+
+    Route::post('auth/login', [LoginController::class, 'store'])
+        ->name('login.store');
 
     Route::resource('forgot-password', ForgotPasswordController::class)
         ->middleware('guest')
