@@ -19,7 +19,7 @@ class UserObserver
         $user->account_created = time();
         $user->last_login = time();
         $user->motto = $settings->get('start_motto');
-        $user->look = $settings->get('start_look');
+        $user->look = $user->look ?: $settings->get('start_look');
         $user->credits = $settings->get('start_credits');
         $user->ip_register = request()->ip();
         $user->ip_current = request()->ip();
