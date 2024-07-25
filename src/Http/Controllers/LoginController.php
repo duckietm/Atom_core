@@ -7,6 +7,7 @@ use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -28,14 +29,16 @@ class LoginController extends Controller
         $user = User::firstWhere('username', $request->get('username'));
 
         if (! $user || ! Hash::check($request->get('password'), $user->password)) {
-            return redirect()->back()
+            return redirect()
+                ->route('login', ['error' => 1])
                 ->withInput()
                 ->withErrors(['username' => 'The provided credentials are incorrect.']);
         }
 
         if (app()->isDownForMaintenance() && $user->rank < 4) {
-            return redirect()->back()
-                ->withErrors(['username' => 'The website is currently down for maintenance.']);
+            return redirect()
+                ->route('login', ['error' => 1])
+                ->withInput();
         }
 
         $secret = @file_get_contents(storage_path('framework/down'));
