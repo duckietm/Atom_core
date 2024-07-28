@@ -2,15 +2,16 @@
 
 namespace Atom\Core\Models;
 
-use Atom\Core\Observers\UserObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Atom\Core\Observers\UserObserver;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
@@ -69,6 +70,7 @@ class User extends Authenticatable
         'secret_key',
         'pincode',
         'extra_rank',
+        'home_background',
         'team_id',
     ];
 
@@ -321,5 +323,35 @@ class User extends Authenticatable
     public function badges(): HasMany
     {
         return $this->hasMany(UserBadge::class, 'user_id');
+    }
+
+    /**
+     * Get the home items for the user.
+     */
+    public function homeItems(): BelongsToMany
+    {
+        return $this->belongsToMany(WebsiteHomeItem::class)
+            ->withPivot('id', 'left', 'top', 'data')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the inventory for the user.
+     */
+    public function inventoryItems(): BelongsToMany
+    {
+        return $this->homeItems()
+            ->wherePivot('left', null)
+            ->wherePivot('top', null);
+    }
+
+    /**
+     * Get the home items for the user.
+     */
+    public function activeItems(): BelongsToMany
+    {
+        return $this->homeItems()
+            ->wherePivot('left', '!=', null)
+            ->wherePivot('top', '!=', null);
     }
 }

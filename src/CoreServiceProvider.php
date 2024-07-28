@@ -26,6 +26,10 @@ class CoreServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(
             path: __DIR__.'/../routes/web.php'
         );
+
+        $this->loadRoutesFrom(
+            path: __DIR__.'/../routes/api.php'
+        );
     }
 
     /**
