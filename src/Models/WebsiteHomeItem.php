@@ -58,7 +58,7 @@ class WebsiteHomeItem extends Model
      */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(WebsiteHomeCategory::class);
+        return $this->belongsTo(WebsiteHomeCategory::class, 'website_home_category_id');
     }
 
     /**
@@ -77,5 +77,13 @@ class WebsiteHomeItem extends Model
     public function getImageAttribute(): string
     {
         return Storage::url($this->image_url);
+    }
+
+    /**
+     * Set the data attribute.
+     */
+    public function setDataAttibute($value): void
+    {
+        $this->attributes['data'] = ! is_null($value) ? (object) $value : (object) [];
     }
 }
