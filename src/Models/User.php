@@ -354,4 +354,14 @@ class User extends Authenticatable
             ->wherePivot('left', '!=', null)
             ->wherePivot('top', '!=', null);
     }
+
+    /**
+     * Get the user's avatar.
+     *
+     * @return string
+     */
+    public function getAvatarAttribute(): string
+    {
+        return sprintf('https://habbo.com/habbo-imaging/avatarimage?figure=%s', $this->look);
+    }
 }
