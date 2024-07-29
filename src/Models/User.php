@@ -331,7 +331,7 @@ class User extends Authenticatable
     public function homeItems(): BelongsToMany
     {
         return $this->belongsToMany(WebsiteHomeItem::class)
-            ->withPivot('id', 'left', 'top', 'data')
+            ->withPivot('id', 'left', 'top', 'z', 'data')
             ->withTimestamps();
     }
 

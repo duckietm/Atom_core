@@ -67,7 +67,7 @@ class WebsiteHomeItem extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
-            ->withPivot('left', 'top', 'data')
+            ->withPivot('id', 'left', 'top', 'z', 'data')
             ->withTimestamps();
     }
 
