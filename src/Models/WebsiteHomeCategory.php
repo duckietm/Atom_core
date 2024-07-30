@@ -41,7 +41,8 @@ class WebsiteHomeCategory extends Model
      */
     public function children(): HasMany
     {
-        return $this->hasMany(WebsiteHomeCategory::class, 'website_home_category_id');
+        return $this->hasMany(WebsiteHomeCategory::class, 'website_home_category_id')
+            ->orderBy('name');
     }
 
     /**
