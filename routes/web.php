@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\Authenticate;
 use Atom\Core\Http\Controllers\BannedController;
+use Atom\Core\Http\Controllers\BetaCodeController;
 use Atom\Core\Http\Controllers\ForgotPasswordController;
 use Atom\Core\Http\Controllers\LoginController;
 use Atom\Core\Http\Controllers\LogoutController;
@@ -13,6 +14,10 @@ Route::middleware('web')->group(function () {
     Route::get('login', [LoginController::class, 'index'])
         ->middleware('guest')
         ->name('login');
+
+    Route::post('beta-codes/login', BetaCodeController::class)
+        ->middleware('guest')
+        ->name('beta-codes.login');
 
     Route::post('auth/login', [LoginController::class, 'store'])
         ->name('login.store');
