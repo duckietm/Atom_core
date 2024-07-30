@@ -2,17 +2,17 @@
 
 namespace Atom\Core\Http\Controllers;
 
-use Illuminate\View\View;
-use Atom\Core\Models\User;
-use Illuminate\Http\Request;
-use Atom\Core\Models\Referral;
-use Illuminate\Routing\Controller;
-use Atom\Rcon\Services\RconService;
-use Atom\Core\Models\WebsiteSetting;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use Atom\Core\Models\ClaimedReferralLog;
 use Atom\Core\Http\Requests\RegisterRequest;
+use Atom\Core\Models\ClaimedReferralLog;
+use Atom\Core\Models\Referral;
+use Atom\Core\Models\User;
+use Atom\Core\Models\WebsiteSetting;
+use Atom\Rcon\Services\RconService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
@@ -58,7 +58,7 @@ class RegisterController extends Controller
     {
         $referrer = User::firstWhere('referral_code', $request->get('referral_code'));
 
-        if (!$referrer) {
+        if (! $referrer) {
             return;
         }
 

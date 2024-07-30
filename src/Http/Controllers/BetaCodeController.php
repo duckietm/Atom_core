@@ -18,7 +18,7 @@ class BetaCodeController extends Controller
 
         $beta = WebsiteBetaCode::firstWhere('code', $request->input('code'));
 
-        if (!$beta) {
+        if (! $beta) {
             return redirect()->route('login');
         }
 

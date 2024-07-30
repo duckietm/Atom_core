@@ -16,7 +16,7 @@ class AvatarController extends Controller
     {
         $user = User::firstWhere('username', $request->get('username'));
 
-        if (!$user) {
+        if (! $user) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
