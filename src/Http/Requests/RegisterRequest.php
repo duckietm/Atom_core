@@ -2,11 +2,12 @@
 
 namespace Atom\Core\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Atom\Core\Rules\AccountLimit;
-use Atom\Core\Rules\RegistrationEnabled;
 use Atom\Core\Rules\ValidAddress;
-use Illuminate\Foundation\Http\FormRequest;
+use Atom\Core\Rules\RegistrationEnabled;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
 {
@@ -31,6 +32,7 @@ class RegisterRequest extends FormRequest
             'mail_confirmation' => ['sometimes', 'nullable', 'email', 'max:255', 'same:mail'],
             'look' => ['sometimes', 'nullable'],
             'password' => ['required', 'string', new Password(8), 'confirmed'],
+            'cf-turnstile-response' => config('services.turnstile.enabled') ? ['required', Rule::turnstile()] : [],
             'terms' => ['sometimes', 'nullable', 'accepted'],
         ];
     }

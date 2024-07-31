@@ -2,13 +2,13 @@
 
 namespace Atom\Core\Http\Controllers;
 
-use Hash;
 use App\Events\UserLogin;
 use Illuminate\View\View;
 use Atom\Core\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Atom\Core\Http\Requests\LoginRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class LoginController extends Controller
@@ -24,7 +24,7 @@ class LoginController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(LoginRequest $request): RedirectResponse
     {
         $user = User::firstWhere('username', $request->get('username'));
 
