@@ -2,8 +2,8 @@
 
 namespace Atom\Core\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LoginRequest extends FormRequest
 {
@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cf-turnstile-response' => config('services.turnstile.enabled') && !app()->isDownForMaintenance() ? ['required', Rule::turnstile()] : [],
+            'cf-turnstile-response' => config('services.turnstile.enabled') && ! app()->isDownForMaintenance() ? ['required', Rule::turnstile()] : [],
         ];
     }
 }

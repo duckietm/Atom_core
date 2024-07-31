@@ -2,12 +2,12 @@
 
 namespace Atom\Core\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Atom\Core\Rules\AccountLimit;
-use Atom\Core\Rules\ValidAddress;
 use Atom\Core\Rules\RegistrationEnabled;
-use Illuminate\Validation\Rules\Password;
+use Atom\Core\Rules\ValidAddress;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
