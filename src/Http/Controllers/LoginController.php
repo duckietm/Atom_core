@@ -2,12 +2,13 @@
 
 namespace Atom\Core\Http\Controllers;
 
-use Atom\Core\Models\User;
 use Hash;
+use App\Events\UserLogin;
+use Illuminate\View\View;
+use Atom\Core\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class LoginController extends Controller
@@ -43,6 +44,8 @@ class LoginController extends Controller
         $secret = @file_get_contents(storage_path('framework/down'));
 
         $user->update(['last_login' => time(), 'ip_current' => $request->ip()]);
+        
+        UserLogin::dispatch($user);
 
         Auth::login($user);
 

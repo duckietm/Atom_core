@@ -2,6 +2,7 @@
 
 namespace Atom\Core\Http\Controllers;
 
+use App\Events\UserRegister;
 use Atom\Core\Http\Requests\RegisterRequest;
 use Atom\Core\Models\ClaimedReferralLog;
 use Atom\Core\Models\Referral;
@@ -47,6 +48,8 @@ class RegisterController extends Controller
         }
 
         Auth::login($user);
+
+        UserRegister::dispatch($user);
 
         return redirect()->route('index');
     }
