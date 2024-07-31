@@ -360,6 +360,6 @@ class User extends Authenticatable
      */
     public function getAvatarAttribute(): string
     {
-        return sprintf('https://habbo.com/habbo-imaging/avatarimage?figure=%s', $this->look);
+        return sprintf('%s?figure=%s', config('nitro.imager_url'), $this->look);
     }
 }
