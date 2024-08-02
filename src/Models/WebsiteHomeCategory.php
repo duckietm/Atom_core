@@ -43,6 +43,7 @@ class WebsiteHomeCategory extends Model
     public function children(): HasMany
     {
         return $this->hasMany(WebsiteHomeCategory::class, 'website_home_category_id')
+            ->where('permission_id', '<=', auth()->user()?->rank ?? 7)
             ->orderBy('name');
     }
 
