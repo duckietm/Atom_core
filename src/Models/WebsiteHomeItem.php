@@ -62,6 +62,14 @@ class WebsiteHomeItem extends Model
     }
 
     /**
+     * Get the permission for the item.
+     */
+    public function permission(): BelongsTo
+    {
+        return $this->belongsTo(Permission::class);
+    }
+
+    /**
      * Get all of the users that are assigned this item.
      */
     public function users(): BelongsToMany

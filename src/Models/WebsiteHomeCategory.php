@@ -26,6 +26,7 @@ class WebsiteHomeCategory extends Model
     protected $fillable = [
         'name',
         'website_home_category_id',
+        'permission_id',
     ];
 
     /**
@@ -51,5 +52,13 @@ class WebsiteHomeCategory extends Model
     public function items(): HasMany
     {
         return $this->hasMany(WebsiteHomeItem::class, 'website_home_category_id');
+    }
+
+    /**
+     * Get the permission for the category.
+     */
+    public function permission(): BelongsTo
+    {
+        return $this->belongsTo(Permission::class);
     }
 }
