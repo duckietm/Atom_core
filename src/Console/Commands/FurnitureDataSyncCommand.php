@@ -30,11 +30,11 @@ class FurnitureDataSyncCommand extends Command
     {
         $furnitureData = json_decode(file_get_contents(base_path('nitro/nitro-assets/gamedata/FurnitureData.json')), true);
 
-        // progress(
-        //     label: 'Syncing Room Items',
-        //     steps: Arr::get($furnitureData, 'roomitemtypes.furnitype'),
-        //     callback: fn (array $item) => $this->sync($item, 'roomitemtypes'),
-        // );
+        progress(
+            label: 'Syncing Room Items',
+            steps: Arr::get($furnitureData, 'roomitemtypes.furnitype'),
+            callback: fn (array $item) => $this->sync($item, 'roomitemtypes'),
+        );
 
         progress(
             label: 'Syncing Wall Items',
