@@ -3,31 +3,22 @@
 namespace Atom\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Sushi\Sushi;
 
 class RoomAds extends Model
 {
-    use Sushi;
-
     /**
      * The table associated with the model.
+     *
+     * @var string
      */
-    protected static function booted()
-    {
-        static::deleted(fn (RoomAds $roomAds) => Storage::disk('room_backgrounds')->delete($roomAds->file));
-    }
+    protected $table = 'room_ads';
 
     /**
-     * Get the rows for the table.
+     * The attributes that are mass assignable.
      *
-     * @return void
+     * @var array
      */
-    public function getRows()
-    {
-        return array_map(
-            fn (string $file) => compact('file'),
-            Storage::disk('room_backgrounds')->files(),
-        );
-    }
+    protected $fillable = [
+        'file',
+    ];
 }

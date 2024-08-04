@@ -33,6 +33,7 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->commands([
             Console\Commands\BadgeSyncCommand::class,
+            Console\Commands\BackgroundSyncCommand::class,
         ]);
     }
 
