@@ -27,4 +27,20 @@ class BadgeObserver
             json_encode($externalTexts),
         );
     }
+
+    /**
+     * Handle the Badge "deleted" event.
+     */
+    public function deleted(Badge $badge): void
+    {
+        $externalTexts = json_decode(file_get_contents(base_path('nitro/nitro-assets/gamedata/ExternalTexts.json')), true);
+
+        Arr::forget($externalTexts, sprintf('badge_name_%s', $badge->code));
+        Arr::forget($externalTexts, sprintf('badge_desc_%s', $badge->code));
+
+        file_put_contents(
+            base_path('nitro/nitro-assets/gamedata/ExternalTexts.json'),
+            json_encode($externalTexts),
+        );
+    }
 }
