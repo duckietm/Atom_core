@@ -30,6 +30,10 @@ class CoreServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(
             path: __DIR__.'/../routes/api.php'
         );
+
+        $this->commands([
+            Console\Commands\BadgeSyncCommand::class,
+        ]);
     }
 
     /**
