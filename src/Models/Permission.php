@@ -31,6 +31,7 @@ class Permission extends Model
         'hidden_rank',
         'badge',
         'job_description',
+        'admin_permissions',
         'staff_color',
         'staff_background',
         'level',
@@ -233,6 +234,15 @@ class Permission extends Model
         'kiss_cmd',
         'acc_calendar_force',
         'cmd_update_calendar',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'admin_permissions' => 'array',
     ];
 
     /**
