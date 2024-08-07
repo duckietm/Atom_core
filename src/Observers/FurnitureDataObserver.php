@@ -11,7 +11,7 @@ class FurnitureDataObserver
      */
     public function saved(FurnitureData $furnitureData): void
     {
-        $furnitures = json_decode(file_get_contents(base_path('nitro/nitro-assets/gamedata/FurnitureData.json')), true);
+        $furnitures = json_decode(file_get_contents(config('nitro.furniture_data_file')), true);
 
         $items = collect($furnitures[$furnitureData->type]['furnitype'])
             ->filter(fn ($item) => $item['id'] != $furnitureData->id)
@@ -23,7 +23,7 @@ class FurnitureDataObserver
         $furnitures[$furnitureData->type]['furnitype'] = $items->values()->toArray();
 
         file_put_contents(
-            base_path('nitro/nitro-assets/gamedata/FurnitureData.json'),
+            config('nitro.furniture_data_file'),
             json_encode($furnitures),
         );
     }
@@ -33,7 +33,7 @@ class FurnitureDataObserver
      */
     public function deleted(FurnitureData $furnitureData): void
     {
-        $furnitures = json_decode(file_get_contents(base_path('nitro/nitro-assets/gamedata/FurnitureData.json')), true);
+        $furnitures = json_decode(file_get_contents(config('nitro.furniture_data_file')), true);
 
         $furnitures[$furnitureData->type]['furnitype'] = collect($furnitures[$furnitureData->type]['furnitype'])
             ->filter(fn ($item) => $item['id'] != $furnitureData->id)
@@ -41,7 +41,7 @@ class FurnitureDataObserver
             ->toArray();
 
         file_put_contents(
-            base_path('nitro/nitro-assets/gamedata/FurnitureData.json'),
+            config('nitro.furniture_data_file'),
             json_encode($furnitures),
         );
     }

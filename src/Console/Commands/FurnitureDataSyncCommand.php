@@ -2,9 +2,10 @@
 
 namespace Atom\Core\Console\Commands;
 
-use Illuminate\Support\Arr;
-use Illuminate\Console\Command;
 use Atom\Core\Models\FurnitureData;
+use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+
 use function Laravel\Prompts\progress;
 
 class FurnitureDataSyncCommand extends Command
@@ -28,7 +29,7 @@ class FurnitureDataSyncCommand extends Command
      */
     public function handle()
     {
-        $furnitureData = json_decode(file_get_contents(base_path('nitro/nitro-assets/gamedata/FurnitureData.json')), true);
+        $furnitureData = json_decode(file_get_contents(config('nitro.furniture_data_file')), true);
 
         progress(
             label: 'Syncing Room Items',
@@ -48,7 +49,7 @@ class FurnitureDataSyncCommand extends Command
      */
     public function sync(array $item, string $type): bool
     {
-        return !!FurnitureData::withoutEvents(fn () => FurnitureData::updateOrCreate(['id' => Arr::get($item, 'id')], [
+        return (bool) FurnitureData::withoutEvents(fn () => FurnitureData::updateOrCreate(['id' => Arr::get($item, 'id')], [
             'type' => $type,
             'classname' => Arr::get($item, 'classname'),
             'name' => Arr::get($item, 'name'),

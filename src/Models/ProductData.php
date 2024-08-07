@@ -2,10 +2,10 @@
 
 namespace Atom\Core\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Atom\Core\Observers\ProductDataObserver;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 #[ObservedBy([ProductDataObserver::class])]
 class ProductData extends Model

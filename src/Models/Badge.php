@@ -3,8 +3,8 @@
 namespace Atom\Core\Models;
 
 use Atom\Core\Observers\BadgeObserver;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Model;
 
 #[ObservedBy([BadgeObserver::class])]
 class Badge extends Model

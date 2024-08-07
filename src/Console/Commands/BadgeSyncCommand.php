@@ -3,8 +3,8 @@
 namespace Atom\Core\Console\Commands;
 
 use Atom\Core\Models\Badge;
-
 use Illuminate\Console\Command;
+
 use function Laravel\Prompts\progress;
 
 class BadgeSyncCommand extends Command
@@ -28,7 +28,7 @@ class BadgeSyncCommand extends Command
      */
     public function handle()
     {
-        $badges = collect(json_decode(file_get_contents(base_path('nitro/nitro-assets/gamedata/ExternalTexts.json'))))
+        $badges = collect(json_decode(file_get_contents(config('nitro.external_texts_file'))))
             ->filter(fn (string $value, string $key) => str_starts_with($key, 'badge_name_') || str_starts_with($key, 'badge_desc_'))
             ->toArray();
 
@@ -48,7 +48,7 @@ class BadgeSyncCommand extends Command
 
         $column = str_starts_with($key, 'badge_name_') ? 'name' : 'description';
 
-        return !!Badge::withoutEvents(fn () => Badge::updateOrCreate(
+        return (bool) Badge::withoutEvents(fn () => Badge::updateOrCreate(
             ['code' => $code, 'file' => sprintf('%s.gif', $code)],
             [$column => $value],
         ));

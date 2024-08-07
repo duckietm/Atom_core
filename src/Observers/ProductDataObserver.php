@@ -3,7 +3,6 @@
 namespace Atom\Core\Observers;
 
 use Atom\Core\Models\ProductData;
-use Illuminate\Support\Arr;
 
 class ProductDataObserver
 {
@@ -12,7 +11,7 @@ class ProductDataObserver
      */
     public function saved(ProductData $productData): void
     {
-        $products = json_decode(file_get_contents(base_path('nitro/nitro-assets/gamedata/ProductData.json')), true);
+        $products = json_decode(file_get_contents(config('nitro.product_data_file')), true);
 
         $items = collect($products['productdata']['product'])
             ->filter(fn ($item) => $item['code'] != $productData->code)
@@ -25,7 +24,7 @@ class ProductDataObserver
         $products['productdata']['product'] = $items->values()->toArray();
 
         file_put_contents(
-            base_path('nitro/nitro-assets/gamedata/ProductData.json'),
+            config('nitro.product_data_file'),
             json_encode($products),
         );
     }
@@ -35,7 +34,7 @@ class ProductDataObserver
      */
     public function deleted(ProductData $productData): void
     {
-        $products = json_decode(file_get_contents(base_path('nitro/nitro-assets/gamedata/ProductData.json')), true);
+        $products = json_decode(file_get_contents(config('nitro.product_data_file')), true);
 
         $products['productdata']['product'] = collect($products['productdata']['product'])
             ->filter(fn ($product) => $product['code'] !== $productData->code)
@@ -43,7 +42,7 @@ class ProductDataObserver
             ->toArray();
 
         file_put_contents(
-            base_path('nitro/nitro-assets/gamedata/ProductData.json'),
+            config('nitro.product_data_file'),
             json_encode($products),
         );
     }

@@ -2,9 +2,10 @@
 
 namespace Atom\Core\Console\Commands;
 
-use Illuminate\Support\Arr;
-use Illuminate\Console\Command;
 use Atom\Core\Models\ProductData;
+use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+
 use function Laravel\Prompts\progress;
 
 class ProductDataSyncCommand extends Command
@@ -28,7 +29,7 @@ class ProductDataSyncCommand extends Command
      */
     public function handle()
     {
-        $productData = json_decode(file_get_contents(base_path('nitro/nitro-assets/gamedata/ProductData.json')), true);
+        $productData = json_decode(file_get_contents(config('nitro.product_data_file')), true);
 
         progress(
             label: 'Syncing Product Data',
@@ -42,7 +43,7 @@ class ProductDataSyncCommand extends Command
      */
     public function sync(array $item): bool
     {
-        return !!ProductData::withoutEvents(fn () => ProductData::updateOrCreate(
+        return (bool) ProductData::withoutEvents(fn () => ProductData::updateOrCreate(
             ['code' => Arr::get($item, 'code')],
             ['name' => Arr::get($item, 'name'), 'description' => Arr::get($item, 'description')],
         ));

@@ -4,6 +4,7 @@ namespace Atom\Core\Console\Commands;
 
 use Atom\Core\Models\UiText;
 use Illuminate\Console\Command;
+
 use function Laravel\Prompts\progress;
 
 class UiTextSyncCommand extends Command
@@ -27,7 +28,7 @@ class UiTextSyncCommand extends Command
      */
     public function handle()
     {
-        $texts = json_decode(file_get_contents(base_path('nitro/nitro-assets/gamedata/UITexts.json')), true);
+        $texts = json_decode(file_get_contents(config('nitro.ui_texts_file')), true);
 
         progress(
             label: 'Syncing UI Texts',
@@ -41,7 +42,7 @@ class UiTextSyncCommand extends Command
      */
     public function sync(string $key, string $value): bool
     {
-        return !!UiText::withoutEvents(fn () => UiText::updateOrCreate(
+        return (bool) UiText::withoutEvents(fn () => UiText::updateOrCreate(
             ['key' => $key],
             ['value' => $value],
         ));

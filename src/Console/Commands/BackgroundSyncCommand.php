@@ -2,13 +2,11 @@
 
 namespace Atom\Core\Console\Commands;
 
-use Atom\Core\Models\Badge;
 use Atom\Core\Models\RoomAds;
-
 use Illuminate\Console\Command;
-use function Laravel\Prompts\progress;
-
 use Illuminate\Support\Facades\Storage;
+
+use function Laravel\Prompts\progress;
 
 class BackgroundSyncCommand extends Command
 {
@@ -46,7 +44,7 @@ class BackgroundSyncCommand extends Command
      */
     public function sync(string $file): bool
     {
-        return !!RoomAds::withoutEvents(fn () => RoomAds::updateOrCreate(
+        return (bool) RoomAds::withoutEvents(fn () => RoomAds::updateOrCreate(
             ['file' => $file],
             ['file' => $file],
         ));
