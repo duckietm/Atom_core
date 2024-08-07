@@ -5,7 +5,6 @@ namespace Atom\Core\Models;
 use Laravel\Sanctum\HasApiTokens;
 use Atom\Core\Observers\UserObserver;
 use Illuminate\Notifications\Notifiable;
-use Pktharindu\NovaPermissions\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The table associated with the model.
