@@ -4,6 +4,7 @@ namespace Atom\Core\Observers;
 
 use Atom\Core\Models\User;
 use Atom\Core\Models\WebsiteSetting;
+use Atom\Rcon\Services\RconService;
 use Illuminate\Support\Str;
 
 class UserObserver
@@ -63,5 +64,15 @@ class UserObserver
             'type' => 101,
             'amount' => $settings->get('start_points'),
         ]);
+    }
+
+    /**
+     * Handle the User "updated" event.
+     */
+    public function updated(User $user): void
+    {
+        $rconService = app(RconService::class);
+
+        if ($user->isDirty('motto')) $rconService->updateUser($user->id, 'motto', $user->motto);
     }
 }
