@@ -356,6 +356,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the user's clones.
+     */
+    public function clones(): HasMany
+    {
+        return $this->hasMany(User::class, 'ip_register', 'ip_register')
+            ->orWhere('ip_current', $this->ip_current)
+            ->orWhere('machine_id', $this->machine_id);
+    }
+
+    /**
      * Get the user's avatar.
      */
     public function getAvatarAttribute(): string
