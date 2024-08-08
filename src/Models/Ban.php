@@ -2,9 +2,12 @@
 
 namespace Atom\Core\Models;
 
+use Atom\Core\Observers\BanObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy(BanObserver::class)]
 class Ban extends Model
 {
     /**
