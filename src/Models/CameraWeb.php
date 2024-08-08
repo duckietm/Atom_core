@@ -30,7 +30,17 @@ class CameraWeb extends Model
         'user_id',
         'room_id',
         'timestamp',
+        'approved',
         'url',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'approved' => 'boolean',
     ];
 
     /**
