@@ -2,8 +2,8 @@
 
 namespace Atom\Core\Observers;
 
-use Carbon\Carbon;
 use Atom\Core\Models\Ban;
+use Carbon\Carbon;
 
 class BanObserver
 {
