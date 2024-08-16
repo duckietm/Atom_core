@@ -50,9 +50,6 @@ class VPNMiddleware
             !!$response->threat->is_tor => $this->throwBlacklistError($request, $ipAddress, 'Tor IP addresses are not allowed.'),
             !!$response->threat->is_proxy => $this->throwBlacklistError($request, $ipAddress, 'Proxy IP addresses are not allowed.'),
             !!$response->threat->is_known_attacker => $this->throwBlacklistError($request, $ipAddress, 'Known attacker IP addresses are not allowed.'),
-            !!$response->threat->is_known_abuser => $this->throwBlacklistError($request, $ipAddress, 'Known abuser IP addresses are not allowed.'),
-            !!$response->threat->is_threat => $this->throwBlacklistError($request, $ipAddress, 'Threat IP addresses are not allowed.'),
-            count($response->threat->blocklists) > 0 => $this->throwBlacklistError($request, $ipAddress, 'Your IP address is on a blocklist.'),
             default => $this->whiteList($request, $next, $ipAddress),
         };
     }
