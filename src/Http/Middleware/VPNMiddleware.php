@@ -47,7 +47,6 @@ class VPNMiddleware
 
         return match(true) {
             !!$response->threat->is_icloud_relay => $this->throwBlacklistError($request, $ipAddress, 'iCloud Relay is not allowed.'),
-            !!$response->threat->is_datacenter => $this->throwBlacklistError($request, $ipAddress, 'Datacenter IP addresses are not allowed.'),
             !!$response->threat->is_tor => $this->throwBlacklistError($request, $ipAddress, 'Tor IP addresses are not allowed.'),
             !!$response->threat->is_proxy => $this->throwBlacklistError($request, $ipAddress, 'Proxy IP addresses are not allowed.'),
             !!$response->threat->is_known_attacker => $this->throwBlacklistError($request, $ipAddress, 'Known attacker IP addresses are not allowed.'),
