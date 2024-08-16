@@ -59,5 +59,10 @@ class CoreServiceProvider extends ServiceProvider
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
+
+        $this->app->bind(
+            \Kielabokkie\Ipdata::class,
+            fn () => new \Kielabokkie\Ipdata(config('services.ipdata.key'))
+        );
     }
 }
