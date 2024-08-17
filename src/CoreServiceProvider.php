@@ -38,6 +38,7 @@ class CoreServiceProvider extends ServiceProvider
             Console\Commands\UiTextSyncCommand::class,
             Console\Commands\ProductDataSyncCommand::class,
             Console\Commands\FurnitureDataSyncCommand::class,
+            Console\Commands\CatalogImageSyncCommand::class,
         ]);
     }
 
