@@ -2,12 +2,13 @@
 
 namespace Atom\Core\Http\Requests;
 
-use Atom\Core\Rules\AccountLimit;
-use Atom\Core\Rules\RegistrationEnabled;
-use Atom\Core\Rules\ValidAddress;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Atom\Core\Rules\AccountLimit;
+use Atom\Core\Rules\ValidAddress;
+use Atom\Core\Rules\DisallowWordFilter;
+use Atom\Core\Rules\RegistrationEnabled;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
 {
@@ -27,11 +28,12 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'string', 'regex:/^[a-zA-Z0-9\-=?!@:,.\s]*$/', 'min:1', 'max:15', 'unique:users', new RegistrationEnabled, new AccountLimit, new ValidAddress],
+            'username' => ['required', 'string', 'regex:/^(?=.*[a-zA-Z])[a-zA-Z0-9\-=?!@:,.\s]*$/', 'min:1', 'max:15', 'unique:users', new DisallowWordFilter, new RegistrationEnabled, new AccountLimit, new ValidAddress],
             'mail' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'mail_confirmation' => ['sometimes', 'nullable', 'email', 'max:255', 'same:mail'],
+            'mail_confirmation' => ['sometimes', 'string', 'email', 'max:255', 'unique:users,mail', 'same:mail'],
             'look' => ['sometimes', 'nullable'],
-            'password' => ['required', 'string', new Password(8), 'confirmed'],
+            'password' => ['required', 'string', new Password(8)],
+            'password_confirmation' => ['required', 'string', new Password(8), 'same:password'],
             'cf-turnstile-response' => config('services.turnstile.enabled') ? ['required', Rule::turnstile()] : [],
             'terms' => ['sometimes', 'nullable', 'accepted'],
         ];
