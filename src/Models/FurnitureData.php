@@ -22,7 +22,7 @@ class FurnitureData extends Model
      * @var array
      */
     protected $fillable = [
-        'id',
+        'item_id',
         'classname',
         'name',
         'revision',

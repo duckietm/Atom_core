@@ -49,7 +49,8 @@ class FurnitureDataSyncCommand extends Command
      */
     public function sync(array $item, string $type): bool
     {
-        return (bool) FurnitureData::withoutEvents(fn () => FurnitureData::updateOrCreate(['id' => Arr::get($item, 'id')], [
+        return (bool) FurnitureData::withoutEvents(fn () => FurnitureData::create([
+            'item_id' => Arr::get($item, 'id'),
             'type' => $type,
             'classname' => Arr::get($item, 'classname'),
             'name' => Arr::get($item, 'name'),

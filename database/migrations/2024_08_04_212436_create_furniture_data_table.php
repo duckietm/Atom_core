@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('furniture_data', function (Blueprint $table) {
             $table->id();
+            $table->integer('item_id');
             $table->enum('type', ['roomitemtypes', 'wallitemtypes']);
             $table->string('classname');
             $table->string('name')->default('duck');
