@@ -71,4 +71,12 @@ class Guild extends Model
     {
         return $this->hasMany(GuildMember::class, 'guild_id');
     }
+
+    /**
+     * Get the room that the guild is associated with.
+     */
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class, 'room_id');
+    }
 }
