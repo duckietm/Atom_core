@@ -3,9 +3,10 @@
 namespace Atom\Core\Http\Controllers;
 
 use Atom\Core\Models\Ban;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\View\View;
+use Atom\Core\Models\WebsiteHelpCenterCategory;
 
 class BannedController extends Controller
 {
@@ -14,6 +15,8 @@ class BannedController extends Controller
      */
     public function __invoke(Request $request): View
     {
+        $categories = WebsiteHelpCenterCategory::all();
+
         $ban = $request->user()
             ->bans()
             ->where('timestamp', '<', time())
@@ -23,6 +26,6 @@ class BannedController extends Controller
             ->where('ban_expire', '>', time())
             ->first();
 
-        return view('banned', compact('ban'));
+        return view('banned', compact('ban', 'categories'));
     }
 }
