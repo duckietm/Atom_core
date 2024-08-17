@@ -33,6 +33,7 @@ class WebsiteArticle extends Model
         'full_story',
         'user_id',
         'image',
+        'is_published',
         'can_comment',
     ];
 
@@ -43,6 +44,7 @@ class WebsiteArticle extends Model
      */
     protected $casts = [
         'can_comment' => 'boolean',
+        'is_published' => 'boolean',
     ];
 
     /**
