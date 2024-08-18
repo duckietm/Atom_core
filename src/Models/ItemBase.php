@@ -3,6 +3,8 @@
 namespace Atom\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ItemBase extends Model
 {
@@ -51,6 +53,30 @@ class ItemBase extends Model
         'effect_id_female',
         'clothing_on_walk',
     ];
+
+    /**
+     * Get the items for the item base.
+     */
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class, 'item_id');
+    }
+
+    /**
+     * Get the catalog items for the item base.
+     */
+    public function catalogItems()
+    {
+        return $this->hasMany(CatalogItem::class, 'item_ids');
+    }
+
+    /**
+     * Get the furniture data for the item base.
+     */
+    public function furnitureData(): BelongsTo
+    {
+        return $this->belongsTo(FurnitureData::class, 'item_name', 'classname');
+    }
 
     /**
      * Set the multiheight attribute.
