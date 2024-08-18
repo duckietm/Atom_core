@@ -29,6 +29,7 @@ class WebsiteHomeItem extends Model
         'description',
         'image_url',
         'website_home_category_id',
+        'maximum_purchases',
         'type',
         'count',
         'price',
