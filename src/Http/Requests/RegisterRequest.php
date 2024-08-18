@@ -5,7 +5,7 @@ namespace Atom\Core\Http\Requests;
 use Illuminate\Validation\Rule;
 use Atom\Core\Rules\AccountLimit;
 use Atom\Core\Rules\ValidAddress;
-use Atom\Core\Rules\DisallowWordFilter;
+use Atom\Core\Rules\UsernameDisabled;
 use Atom\Core\Rules\RegistrationEnabled;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,7 +28,7 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'string', 'regex:/^(?=.*[a-zA-Z])[a-zA-Z0-9\-=?!@:,.\s]*$/', 'min:1', 'max:15', 'unique:users', new DisallowWordFilter, new RegistrationEnabled, new AccountLimit, new ValidAddress],
+            'username' => ['required', 'string', 'regex:/^(?=.*[a-zA-Z])[a-zA-Z0-9\-=?!@:,.\s]*$/', 'min:1', 'max:15', 'unique:users', new UsernameDisabled, new RegistrationEnabled, new AccountLimit, new ValidAddress],
             'mail' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'mail_confirmation' => ['sometimes', 'string', 'email', 'max:255', 'unique:users,mail', 'same:mail'],
             'look' => ['sometimes', 'nullable'],
