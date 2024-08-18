@@ -74,7 +74,7 @@ class UserObserver
         $rconService = app(RconService::class);
 
         if ($user->isDirty('motto')) {
-            $rconService->updateUser($user->id, 'motto', $user->motto);
+            $rconService->setMotto($user->id, $user->motto);
         }
     }
 }
