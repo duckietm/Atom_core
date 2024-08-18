@@ -53,6 +53,14 @@ class CatalogItem extends Model
     }
 
     /**
+     * Get the item base that owns the catalog item.
+     */
+    public function itemBase(): BelongsTo
+    {
+        return $this->belongsTo(ItemBase::class, 'item_ids');
+    }
+
+    /**
      * Set the extradata.
      */
     public function setExtradataAttribute($value)
