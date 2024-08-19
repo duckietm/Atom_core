@@ -4,6 +4,7 @@ namespace Atom\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Room extends Model
@@ -79,6 +80,14 @@ class Room extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    /**
+     * Get the items for the room.
+     */
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class, 'room_id');
     }
 
     /**

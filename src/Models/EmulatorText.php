@@ -14,7 +14,7 @@ class EmulatorText extends Model
     protected $table = 'emulator_texts';
 
     /**
-     * Indicates if the model should be timestamped.
+     * Determine if the model should be timestamped.
      *
      * @var bool
      */

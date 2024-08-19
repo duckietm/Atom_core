@@ -50,6 +50,14 @@ class Item extends Model
     }
 
     /**
+     * Get the item base that owns the item.
+     */
+    public function itemBase(): BelongsTo
+    {
+        return $this->belongsTo(ItemBase::class, 'item_id');
+    }
+
+    /**
      * Get the room that owns the item.
      */
     public function room(): BelongsTo
