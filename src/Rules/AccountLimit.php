@@ -18,7 +18,7 @@ class AccountLimit implements ValidationRule
     {
         $settings = WebsiteSetting::firstOrCreate(
             ['key' => 'max_accounts_per_ip'],
-            ['value' => 2],
+            ['value' => 2, 'comment' => 'The maximum allowed accounts registered per IP address'],
         );
 
         $users = User::where('ip_current', request()->ip())

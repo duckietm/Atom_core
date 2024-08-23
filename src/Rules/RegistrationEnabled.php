@@ -17,7 +17,7 @@ class RegistrationEnabled implements ValidationRule
     {
         $settings = WebsiteSetting::firstOrCreate(
             ['key' => 'disable_registration'],
-            ['value' => 0],
+            ['value' => 0, 'comment' => 'Determines whether registration is enabled or not (0 for no & 1 for yes)'],
         );
 
         if ((bool) $settings->value) {
