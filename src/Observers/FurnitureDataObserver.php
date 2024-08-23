@@ -12,7 +12,9 @@ class FurnitureDataObserver
      */
     public function saving(FurnitureData $furnitureData): void
     {
-        if (is_null($furnitureData->partcolors)) $furnitureData->partcolors = ['colors' => []];
+        if (is_null($furnitureData->partcolors)) {
+            $furnitureData->partcolors = ['colors' => []];
+        }
     }
 
     /**
@@ -43,7 +45,7 @@ class FurnitureDataObserver
                 'specialtype' => $furnitureData->specialtype,
                 'furniline' => $furnitureData->furniline,
                 'environment' => $furnitureData->environment,
-                'rare' => $furnitureData->rare
+                'rare' => $furnitureData->rare,
             ]))
             ->when($furnitureData->type === 'roomitemtypes', fn (Collection $items) => $items->push([
                 'id' => $furnitureData->item_id,

@@ -2,11 +2,11 @@
 
 namespace Atom\Core\Http\Middleware;
 
-use Closure;
-use Illuminate\Http\Request;
 use Atom\Core\Models\WebsiteIpBlacklist;
 use Atom\Core\Models\WebsiteIpWhitelist;
 use Atom\Core\Services\ProxyDetectionService;
+use Closure;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class VPNMiddleware
@@ -16,40 +16,46 @@ class VPNMiddleware
      */
     public function __construct(public readonly ProxyDetectionService $proxyService)
     {
-        // 
+        //
     }
-    
+
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      */
     public function handle(Request $request, Closure $next): Response
-    { 
+    {
         $ipAddress = $request->ip();
 
-        if (!auth()->check())
+        if (! auth()->check()) {
             return $next($request);
+        }
 
-        if (WebsiteIpWhitelist::where('ip_address', $ipAddress)->exists())
+        if (WebsiteIpWhitelist::where('ip_address', $ipAddress)->exists()) {
             return $next($request);
+        }
 
-        if (WebsiteIpBlacklist::where('ip_address', $ipAddress)->exists())
+        if (WebsiteIpBlacklist::where('ip_address', $ipAddress)->exists()) {
             return $this->throwBlacklistError($request, $ipAddress, 'Your IP address has been blacklisted.');
+        }
 
         $response = $this->proxyService->lookup($ipAddress);
 
-        if ($response->status === 'fail')
+        if ($response->status === 'fail') {
             return $next($request);
+        }
 
-        if (WebsiteIpWhitelist::where('asn', $response->asname)->where('whitelist_asn', '1')->exists())
+        if (WebsiteIpWhitelist::where('asn', $response->asname)->where('whitelist_asn', '1')->exists()) {
             return $this->whiteList($request, $next, $ipAddress);
+        }
 
-        if (WebsiteIpBlacklist::where('asn', $response->asname)->where('blacklist_asn', '1')->exists())
+        if (WebsiteIpBlacklist::where('asn', $response->asname)->where('blacklist_asn', '1')->exists()) {
             return $this->throwBlacklistError($request, $ipAddress, 'Your IP address has been blacklisted.');
-        
-        return match(true) {
-            !!$response->proxy => $this->throwBlacklistError($request, $ipAddress, 'Proxy IP addresses are not allowed.'),
+        }
+
+        return match (true) {
+            (bool) $response->proxy => $this->throwBlacklistError($request, $ipAddress, 'Proxy IP addresses are not allowed.'),
             default => $this->whiteList($request, $next, $ipAddress),
         };
     }

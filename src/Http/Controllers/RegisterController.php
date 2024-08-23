@@ -2,19 +2,19 @@
 
 namespace Atom\Core\Http\Controllers;
 
-use Illuminate\View\View;
-use Atom\Core\Models\User;
 use App\Events\UserRegister;
-use Illuminate\Http\Request;
-use Atom\Core\Models\Referral;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
-use Atom\Rcon\Services\RconService;
-use Atom\Core\Models\WebsiteSetting;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use Atom\Core\Models\ClaimedReferralLog;
 use Atom\Core\Http\Requests\RegisterRequest;
+use Atom\Core\Models\ClaimedReferralLog;
+use Atom\Core\Models\Referral;
+use Atom\Core\Models\User;
+use Atom\Core\Models\WebsiteSetting;
+use Atom\Rcon\Services\RconService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class RegisterController extends Controller
 {

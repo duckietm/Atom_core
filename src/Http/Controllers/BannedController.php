@@ -3,10 +3,10 @@
 namespace Atom\Core\Http\Controllers;
 
 use Atom\Core\Models\Ban;
-use Illuminate\View\View;
+use Atom\Core\Models\WebsiteHelpCenterCategory;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Atom\Core\Models\WebsiteHelpCenterCategory;
+use Illuminate\View\View;
 
 class BannedController extends Controller
 {
