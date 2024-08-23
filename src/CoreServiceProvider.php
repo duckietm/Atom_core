@@ -2,6 +2,7 @@
 
 namespace Atom\Core;
 
+use Atom\Core\Services\ProxyDetectionService;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -62,8 +63,8 @@ class CoreServiceProvider extends ServiceProvider
         }
 
         $this->app->bind(
-            \Kielabokkie\Ipdata::class,
-            fn () => new \Kielabokkie\Ipdata(config('services.ipdata.key'))
+            ProxyDetectionService::class,
+            fn () => new ProxyDetectionService,
         );
     }
 }

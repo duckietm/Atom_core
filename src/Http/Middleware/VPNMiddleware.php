@@ -3,10 +3,10 @@
 namespace Atom\Core\Http\Middleware;
 
 use Closure;
-use Kielabokkie\Ipdata;
 use Illuminate\Http\Request;
 use Atom\Core\Models\WebsiteIpBlacklist;
 use Atom\Core\Models\WebsiteIpWhitelist;
+use Atom\Core\Services\ProxyDetectionService;
 use Symfony\Component\HttpFoundation\Response;
 
 class VPNMiddleware
@@ -14,7 +14,7 @@ class VPNMiddleware
     /**
      * Create a new VPN middleware instance.
      */
-    public function __construct(public readonly Ipdata $ipdata)
+    public function __construct(public readonly ProxyDetectionService $proxyService)
     {
         // 
     }
@@ -28,7 +28,7 @@ class VPNMiddleware
     { 
         $ipAddress = $request->ip();
 
-        if (!config('services.ipdata.enabled') || !auth()->check())
+        if (!auth()->check())
             return $next($request);
 
         if (WebsiteIpWhitelist::where('ip_address', $ipAddress)->exists())
@@ -37,19 +37,19 @@ class VPNMiddleware
         if (WebsiteIpBlacklist::where('ip_address', $ipAddress)->exists())
             return $this->throwBlacklistError($request, $ipAddress, 'Your IP address has been blacklisted.');
 
-        $response = $this->ipdata->lookup($ipAddress);
+        $response = $this->proxyService->lookup($ipAddress);
 
-        if (WebsiteIpWhitelist::where('asn', $response->asn->asn)->where('whitelist_asn', '1')->exists())
+        if ($response->status === 'fail')
+            return $next($request);
+
+        if (WebsiteIpWhitelist::where('asn', $response->asname)->where('whitelist_asn', '1')->exists())
             return $this->whiteList($request, $next, $ipAddress);
 
-        if (WebsiteIpBlacklist::where('asn', $response->asn->asn)->where('blacklist_asn', '1')->exists())
+        if (WebsiteIpBlacklist::where('asn', $response->asname)->where('blacklist_asn', '1')->exists())
             return $this->throwBlacklistError($request, $ipAddress, 'Your IP address has been blacklisted.');
-
+        
         return match(true) {
-            !!$response->threat->is_icloud_relay => $this->throwBlacklistError($request, $ipAddress, 'iCloud Relay is not allowed.'),
-            !!$response->threat->is_tor => $this->throwBlacklistError($request, $ipAddress, 'Tor IP addresses are not allowed.'),
-            !!$response->threat->is_proxy => $this->throwBlacklistError($request, $ipAddress, 'Proxy IP addresses are not allowed.'),
-            !!$response->threat->is_known_attacker => $this->throwBlacklistError($request, $ipAddress, 'Known attacker IP addresses are not allowed.'),
+            !!$response->proxy => $this->throwBlacklistError($request, $ipAddress, 'Proxy IP addresses are not allowed.'),
             default => $this->whiteList($request, $next, $ipAddress),
         };
     }

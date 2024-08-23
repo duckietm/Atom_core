@@ -167,11 +167,6 @@ return new class extends Migration
             'comment' => 'Toggles whether the VPN blocker is enabled or not',
         ],
         [
-            'key' => 'ipdata_api_key',
-            'value' => 'ADD-API-KEY-HERE',
-            'comment' => 'The API key needed from ipdata.co to block VPNs (Only necessary if vpn block is enabled)',
-        ],
-        [
             'key' => 'cms_logo',
             'value' => '/images/kasja_atomlogo.png',
             'comment' => 'Default logo for the cms',
