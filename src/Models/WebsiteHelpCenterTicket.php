@@ -58,6 +58,7 @@ class WebsiteHelpCenterTicket extends Model
      */
     public function replies(): HasMany
     {
-        return $this->hasMany(WebsiteHelpCenterTicketReply::class, 'ticket_id');
+        return $this->hasMany(WebsiteHelpCenterTicketReply::class, 'ticket_id')
+            ->latest();
     }
 }
