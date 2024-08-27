@@ -318,6 +318,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the rooms for the user.
+     */
+    public function rooms(): HasMany
+    {
+        return $this->hasMany(Room::class, 'owner_id');
+    }
+
+    /**
      * Get the badges for the user.
      */
     public function badges(): HasMany
