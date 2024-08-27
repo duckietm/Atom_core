@@ -42,6 +42,6 @@ class WebsiteRareValue extends Model
      */
     public function item(): BelongsTo
     {
-        return $this->belongsTo(CatalogItem::class, 'item_id');
+        return $this->belongsTo(ItemBase::class, 'item_id');
     }
 }

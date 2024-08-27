@@ -3,8 +3,9 @@
 namespace Atom\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ItemBase extends Model
 {
@@ -76,6 +77,16 @@ class ItemBase extends Model
     public function furnitureData(): BelongsTo
     {
         return $this->belongsTo(FurnitureData::class, 'item_name', 'classname');
+    }
+
+    /**
+     * Get the icon attribute.
+     */
+    public function getIconAttribute(): string
+    {
+        return Storage::disk('furniture_icons')->url(
+            sprintf('%s_icon.png', str_replace(['*', '.'], '_', $this->item_name))
+        );
     }
 
     /**
