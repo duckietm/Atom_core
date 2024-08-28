@@ -12,11 +12,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
+
         DB::table('website_shop_article_features')
             ->truncate();
 
         DB::table('website_shop_articles')
             ->truncate();
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
