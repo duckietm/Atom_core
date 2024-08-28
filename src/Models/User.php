@@ -375,8 +375,6 @@ class User extends Authenticatable
 
     /**
      * Get the user's items.
-     *
-     * @return HasMany
      */
     public function items(): HasMany
     {

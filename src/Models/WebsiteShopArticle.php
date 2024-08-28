@@ -2,10 +2,10 @@
 
 namespace Atom\Core\Models;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 class WebsiteShopArticle extends Model
 {
@@ -73,8 +73,6 @@ class WebsiteShopArticle extends Model
 
     /**
      * Get the badge items from the badges array.
-     *
-     * @return array
      */
     public function getBadgeItemsAttribute(): array
     {
@@ -93,6 +91,6 @@ class WebsiteShopArticle extends Model
 
         return collect($this->furniture)
             ->pluck('fields')
-            ->map(fn (array $item) => (object) [ ...$item, 'item' => $items->firstWhere('id', $item['id']) ]);
+            ->map(fn (array $item) => (object) [...$item, 'item' => $items->firstWhere('id', $item['id'])]);
     }
 }
