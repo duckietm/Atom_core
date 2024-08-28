@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('defaultdir')->default(0);
             $table->integer('xdim')->default(1);
             $table->integer('ydim')->default(1);
-            $table->json('partcolors')->default('{}');
+            $table->json('partcolors');
             $table->string('adurl')->nullable();
             $table->boolean('buyout')->default(0);
             $table->integer('rentofferid')->default(-1);
