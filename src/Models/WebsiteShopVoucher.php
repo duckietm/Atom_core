@@ -3,6 +3,7 @@
 namespace Atom\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class WebsiteShopVoucher extends Model
 {
@@ -34,4 +35,12 @@ class WebsiteShopVoucher extends Model
     protected $casts = [
         'expires_at' => 'datetime',
     ];
+
+    /**
+     * Get the redeems for the shop voucher.
+     */
+    public function redeems(): HasMany
+    {
+        return $this->hasMany(WebsiteUsedShopVoucher::class, 'voucher_id');
+    }
 }

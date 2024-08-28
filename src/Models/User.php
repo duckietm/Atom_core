@@ -374,6 +374,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the user's items.
+     *
+     * @return HasMany
+     */
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class, 'user_id');
+    }
+
+    /**
      * Get the user's avatar.
      */
     public function getAvatarAttribute(): string

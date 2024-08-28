@@ -3,6 +3,7 @@
 namespace Atom\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class WebsiteShopCategory extends Model
 {
@@ -23,4 +24,12 @@ class WebsiteShopCategory extends Model
         'slug',
         'icon',
     ];
+
+    /**
+     * Get the articles for the category.
+     */
+    public function articles(): HasMany
+    {
+        return $this->hasMany(WebsiteShopArticle::class, 'website_shop_category_id', 'id');
+    }
 }
