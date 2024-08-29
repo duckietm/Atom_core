@@ -28,6 +28,10 @@ class VPNMiddleware
     {
         $ipAddress = $request->ip();
 
+        if (! config('services.ip-api.enabled')) {
+            return $next($request);
+        }
+
         if (! auth()->check()) {
             return $next($request);
         }
