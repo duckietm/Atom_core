@@ -4,6 +4,7 @@ namespace Atom\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Item extends Model
 {
@@ -63,5 +64,13 @@ class Item extends Model
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class, 'room_id');
+    }
+
+    /**
+     * Get the catalog items for the item.
+     */
+    public function catalogItems(): HasMany
+    {
+        return $this->hasMany(CatalogItem::class, 'item_ids', 'item_id');
     }
 }
