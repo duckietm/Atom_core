@@ -4,6 +4,7 @@ namespace Atom\Core\Observers;
 
 use Atom\Core\Models\FurnitureData;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class FurnitureDataObserver
 {
@@ -22,7 +23,7 @@ class FurnitureDataObserver
      */
     public function saved(FurnitureData $furnitureData): void
     {
-        $furnitures = json_decode(file_get_contents(config('nitro.furniture_data_file')), true);
+        $furnitures = json_decode(Storage::disk('static')->get(config('nitro.furniture_data_file')), true);
 
         $furnitureItems = collect($furnitures[$furnitureData->type]['furnitype'])
             ->filter(fn (array $item) => $item['db_id'] != $furnitureData->id)
@@ -78,10 +79,8 @@ class FurnitureDataObserver
 
         $furnitures[$furnitureData->type]['furnitype'] = $furnitureItems->values()->toArray();
 
-        file_put_contents(
-            config('nitro.furniture_data_file'),
-            json_encode($furnitures),
-        );
+        Storage::disk('static')
+            ->put(config('nitro.furniture_data_file'), json_encode($furnitures));
     }
 
     /**
@@ -89,16 +88,14 @@ class FurnitureDataObserver
      */
     public function deleted(FurnitureData $furnitureData): void
     {
-        $furnitures = json_decode(file_get_contents(config('nitro.furniture_data_file')), true);
+        $furnitures = json_decode(Storage::disk('static')->get(config('nitro.furniture_data_file')), true);
 
         $furnitures[$furnitureData->type]['furnitype'] = collect($furnitures[$furnitureData->type]['furnitype'])
             ->filter(fn (array $item) => $item['db_id'] != $furnitureData->id)
             ->values()
             ->toArray();
 
-        file_put_contents(
-            config('nitro.furniture_data_file'),
-            json_encode($furnitures),
-        );
+        Storage::disk('static')
+            ->put(config('nitro.furniture_data_file'), json_encode($furnitures));
     }
 }

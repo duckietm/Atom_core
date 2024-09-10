@@ -3,6 +3,7 @@
 namespace Atom\Core\Observers;
 
 use Atom\Core\Models\UiText;
+use Illuminate\Support\Facades\Storage;
 
 class UiTextObserver
 {
@@ -11,16 +12,14 @@ class UiTextObserver
      */
     public function saved(UiText $text): void
     {
-        $texts = json_decode(file_get_contents(config('nitro.ui_texts_file')), true);
+        $texts = json_decode(Storage::disk('static')->get(config('nitro.ui_texts_file')), true);
 
         unset($texts[$text->getOriginal('key')]);
 
         $texts[$text->key] = $text->value;
 
-        file_put_contents(
-            config('nitro.ui_texts_file'),
-            json_encode($texts),
-        );
+        Storage::disk('static')
+            ->put(config('nitro.ui_texts_file'), json_encode($texts));
     }
 
     /**
@@ -28,13 +27,11 @@ class UiTextObserver
      */
     public function deleted(UiText $text): void
     {
-        $texts = json_decode(file_get_contents(config('nitro.ui_texts_file')), true);
+        $texts = json_decode(Storage::disk('static')->get(config('nitro.ui_texts_file')), true);
 
         unset($texts[$text->key]);
 
-        file_put_contents(
-            config('nitro.ui_texts_file'),
-            json_encode($texts),
-        );
+        Storage::disk('static')
+            ->put(config('nitro.ui_texts_file'), json_encode($texts));
     }
 }

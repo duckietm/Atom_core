@@ -4,6 +4,7 @@ namespace Atom\Core\Observers;
 
 use Atom\Core\Models\Badge;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class BadgeObserver
 {
@@ -12,20 +13,19 @@ class BadgeObserver
      */
     public function saved(Badge $badge): void
     {
-        $externalTexts = json_decode(file_get_contents(config('nitro.external_texts_file')), true);
+        $file = Storage::disk('static')
+            ->get(config('nitro.external_texts_file'));
 
-        if ($badge->isDirty('name')) {
-            Arr::set($externalTexts, sprintf('badge_name_%s', $badge->code), $badge->name);
-        }
+        if (!$file) return;
 
-        if ($badge->isDirty('description')) {
-            Arr::set($externalTexts, sprintf('badge_desc_%s', $badge->code), $badge->description);
-        }
+        $externalTexts = json_decode($file, true);
 
-        file_put_contents(
-            config('nitro.external_texts_file'),
-            json_encode($externalTexts),
-        );
+        Arr::set($externalTexts, sprintf('badge_name_%s', $badge->code), $badge->name);
+
+        Arr::set($externalTexts, sprintf('badge_desc_%s', $badge->code), $badge->description);
+
+        Storage::disk('static')
+            ->put(config('nitro.external_texts_file'), json_encode($externalTexts));
     }
 
     /**
@@ -33,14 +33,18 @@ class BadgeObserver
      */
     public function deleted(Badge $badge): void
     {
-        $externalTexts = json_decode(file_get_contents(config('nitro.external_texts_file')), true);
+        $file = Storage::disk('static')
+            ->get(config('nitro.external_texts_file'));
+
+        if (!$file) return;
+
+        $externalTexts = json_decode($file, true);
 
         Arr::forget($externalTexts, sprintf('badge_name_%s', $badge->code));
+        
         Arr::forget($externalTexts, sprintf('badge_desc_%s', $badge->code));
 
-        file_put_contents(
-            config('nitro.external_texts_file'),
-            json_encode($externalTexts),
-        );
+        Storage::disk('static')
+            ->put(config('nitro.external_texts_file'), json_encode($externalTexts));
     }
 }
