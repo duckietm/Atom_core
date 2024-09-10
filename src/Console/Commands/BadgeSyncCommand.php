@@ -6,6 +6,7 @@ use Atom\Core\Models\Badge;
 use Illuminate\Console\Command;
 
 use function Laravel\Prompts\progress;
+use Illuminate\Support\Facades\Storage;
 
 class BadgeSyncCommand extends Command
 {
@@ -28,8 +29,17 @@ class BadgeSyncCommand extends Command
      */
     public function handle()
     {
-        $badges = collect(json_decode(file_get_contents(config('nitro.external_texts_file'))))
-            ->filter(fn (string $value, string $key) => str_starts_with($key, 'badge_name_') || str_starts_with($key, 'badge_desc_'))
+        $file = Storage::disk('static')
+            ->get(config('nitro.external_texts_file'));
+
+        if (!$file) {
+            $this->error(sprintf('The external texts file is empty or missing in %s.', Storage::disk('static')->path(config('nitro.external_texts_file'))));
+
+            return 1;
+        }
+
+        $badges = collect(json_decode($file, true))
+            ->filter(fn ($value, $key) => str_starts_with($key, 'badge_name_') || str_starts_with($key, 'badge_desc_'))
             ->toArray();
 
         progress(

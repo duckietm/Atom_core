@@ -2,11 +2,12 @@
 
 namespace Atom\Core\Console\Commands;
 
-use Atom\Core\Models\ProductData;
-use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Console\Command;
+use Atom\Core\Models\ProductData;
 
 use function Laravel\Prompts\progress;
+use Illuminate\Support\Facades\Storage;
 
 class ProductDataSyncCommand extends Command
 {
@@ -29,7 +30,16 @@ class ProductDataSyncCommand extends Command
      */
     public function handle()
     {
-        $productData = json_decode(file_get_contents(config('nitro.product_data_file')), true);
+        $file = Storage::disk('static')
+            ->get(config('nitro.product_data_file'));
+
+        if (!$file) {
+            $this->error(sprintf('The product data file is empty or missing in %s.', Storage::disk('static')->path(config('nitro.product_data_file'))));
+
+            return 1;
+        }
+
+        $productData = json_decode($file, true);
 
         progress(
             label: 'Syncing Product Data',

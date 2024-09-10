@@ -6,6 +6,7 @@ use Atom\Core\Models\UiText;
 use Illuminate\Console\Command;
 
 use function Laravel\Prompts\progress;
+use Illuminate\Support\Facades\Storage;
 
 class UiTextSyncCommand extends Command
 {
@@ -28,7 +29,16 @@ class UiTextSyncCommand extends Command
      */
     public function handle()
     {
-        $texts = json_decode(file_get_contents(config('nitro.ui_texts_file')), true);
+        $file = Storage::disk('static')
+            ->get(config('nitro.ui_texts_file'));
+
+        if (!$file) {
+            $this->error(sprintf('The UI Texts file is empty or missing in %s.', Storage::disk('static')->path(config('nitro.ui_texts_file'))));
+
+            return 1;
+        }
+
+        $texts = json_decode($file, true);
 
         progress(
             label: 'Syncing UI Texts',
