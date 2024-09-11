@@ -3,7 +3,9 @@
 namespace Atom\Core\Models;
 
 use Atom\Core\Observers\UserObserver;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -11,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 #[ObservedBy([UserObserver::class])]
@@ -364,21 +367,25 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user's clones.
-     */
-    public function clones(): HasMany
-    {
-        return $this->hasMany(User::class, 'ip_register', 'ip_register')
-            ->orWhere('ip_current', $this->ip_current)
-            ->orWhere('machine_id', $this->machine_id);
-    }
-
-    /**
      * Get the user's items.
      */
     public function items(): HasMany
     {
         return $this->hasMany(Item::class, 'user_id');
+    }
+
+    /**
+     * Get the cloned users for the user.
+     */
+    public function getClonesAttribute(): Collection
+    {
+        return User::where('id', '<>', $this->id)
+            ->where(fn (Builder $query) => $query->where('ip_register', $this->ip_register)
+                ->orWhere('ip_register', $this->ip_current)
+                ->orWhere('ip_current', $this->ip_register)
+                ->orWhere('ip_current', $this->ip_current))
+            ->orderBy('id', 'asc')
+            ->get();
     }
 
     /**
