@@ -16,7 +16,9 @@ class BadgeObserver
         $file = Storage::disk('static')
             ->get(config('nitro.external_texts_file'));
 
-        if (!$file) return;
+        if (! $file) {
+            return;
+        }
 
         $externalTexts = json_decode($file, true);
 
@@ -36,12 +38,14 @@ class BadgeObserver
         $file = Storage::disk('static')
             ->get(config('nitro.external_texts_file'));
 
-        if (!$file) return;
+        if (! $file) {
+            return;
+        }
 
         $externalTexts = json_decode($file, true);
 
         Arr::forget($externalTexts, sprintf('badge_name_%s', $badge->code));
-        
+
         Arr::forget($externalTexts, sprintf('badge_desc_%s', $badge->code));
 
         Storage::disk('static')

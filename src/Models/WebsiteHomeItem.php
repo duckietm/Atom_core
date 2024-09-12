@@ -114,7 +114,7 @@ class WebsiteHomeItem extends Model
             optional($this->pivotData)->waving ? 'wav' : null,
             optional($this->pivotData)->item ? "crr={$this->pivotData->item}" : null,
         ]);
-        
+
         return http_build_query([
             'img_format' => 'gif',
             'size' => $this->pivotData->size ?? 'm',

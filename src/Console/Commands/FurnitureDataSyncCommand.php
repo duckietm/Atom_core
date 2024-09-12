@@ -2,12 +2,12 @@
 
 namespace Atom\Core\Console\Commands;
 
-use Illuminate\Support\Arr;
-use Illuminate\Console\Command;
 use Atom\Core\Models\FurnitureData;
+use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 use function Laravel\Prompts\progress;
-use Illuminate\Support\Facades\Storage;
 
 class FurnitureDataSyncCommand extends Command
 {
@@ -33,7 +33,7 @@ class FurnitureDataSyncCommand extends Command
         $file = Storage::disk('static')
             ->get(config('nitro.furniture_data_file'));
 
-        if (!$file) {
+        if (! $file) {
             $this->error(sprintf('The furniture data file is empty or missing in %s.', Storage::disk('static')->path(config('nitro.furniture_data_file'))));
 
             return 1;
