@@ -352,6 +352,7 @@ class User extends Authenticatable
     public function inventoryItems(): BelongsToMany
     {
         return $this->homeItems()
+            ->wherePivot('user_id', $this->id)
             ->wherePivot('left', null)
             ->wherePivot('top', null);
     }
@@ -362,6 +363,7 @@ class User extends Authenticatable
     public function activeItems(): BelongsToMany
     {
         return $this->homeItems()
+            ->wherePivot('user_id', $this->id)
             ->wherePivot('left', '!=', null)
             ->wherePivot('top', '!=', null);
     }

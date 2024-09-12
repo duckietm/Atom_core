@@ -95,4 +95,34 @@ class WebsiteHomeItem extends Model
     {
         $this->attributes['data'] = ! is_null($value) ? (object) $value : (object) [];
     }
+
+    /**
+     * Get the pivot data attribute.
+     */
+    public function getPivotDataAttribute(): object
+    {
+        return json_decode($this->pivot->data);
+    }
+
+    /**
+     * Get the avatar attribute.
+     */
+    public function getAvatarAttribute(): string
+    {
+        $action = array_filter([
+            $this->pivotData->action ?? 'std',
+            optional($this->pivotData)->waving ? 'wav' : null,
+            optional($this->pivotData)->item ? "crr={$this->pivotData->item}" : null,
+        ]);
+        
+        return http_build_query([
+            'img_format' => 'gif',
+            'size' => $this->pivotData->size ?? 'm',
+            'head_direction' => $this->pivotData->head_direction ?? 3,
+            'direction' => $this->pivotData->direction ?? 3,
+            'gesture' => $this->pivotData->gesture ?? 'std',
+            'action' => implode(',', $action),
+            'headonly' => $this->pivotData->headonly ?? 0,
+        ]);
+    }
 }
