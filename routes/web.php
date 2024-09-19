@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\Authenticate;
 use Atom\Core\Http\Controllers\BannedController;
+use Atom\Core\Http\Controllers\ProxyController;
 use Atom\Core\Http\Controllers\BetaCodeController;
 use Atom\Core\Http\Controllers\ForgotPasswordController;
 use Atom\Core\Http\Controllers\LoginController;
@@ -37,6 +38,10 @@ Route::middleware('web')->group(function () {
     Route::get('banned', BannedController::class)
         ->middleware(Authenticate::using('sanctum'))
         ->name('banned');
+
+    Route::get('proxy', ProxyController::class)
+        ->middleware(Authenticate::using('sanctum'))
+        ->name('proxy');
 
     Route::get('logout', LogoutController::class)
         ->middleware(Authenticate::using('sanctum'))

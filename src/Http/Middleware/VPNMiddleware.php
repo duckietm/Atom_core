@@ -28,6 +28,10 @@ class VPNMiddleware
     {
         $ipAddress = $request->ip();
 
+        if ($request->routeIs('proxy') && (! config('services.ip-api.enabled') || ! auth()->check() || WebsiteIpWhitelist::where('ip_address', $ipAddress)->exists())) {
+            return redirect()->route('index');
+        }
+
         if (! config('services.ip-api.enabled')) {
             return $next($request);
         }
@@ -41,7 +45,7 @@ class VPNMiddleware
         }
 
         if (WebsiteIpBlacklist::where('ip_address', $ipAddress)->exists()) {
-            return $this->throwBlacklistError($request, $ipAddress, 'Your IP address has been blacklisted.');
+            return $this->throwBlacklistError($request, $next, $ipAddress, 'Your IP address has been blacklisted.');
         }
 
         $response = $this->proxyService->lookup($ipAddress);
@@ -55,11 +59,11 @@ class VPNMiddleware
         }
 
         if (WebsiteIpBlacklist::where('asn', $response->asname)->where('blacklist_asn', '1')->exists()) {
-            return $this->throwBlacklistError($request, $ipAddress, 'Your IP address has been blacklisted.');
+            return $this->throwBlacklistError($request, $next, $ipAddress, 'Your IP address has been blacklisted.');
         }
 
         return match (true) {
-            (bool) $response->proxy => $this->throwBlacklistError($request, $ipAddress, 'Proxy IP addresses are not allowed.'),
+            (bool) $response->proxy => $this->throwBlacklistError($request, $next, $ipAddress, 'Proxy IP addresses are not allowed.'),
             default => $this->whiteList($request, $next, $ipAddress),
         };
     }
@@ -69,6 +73,10 @@ class VPNMiddleware
      */
     protected function whiteList(Request $request, Closure $next, string $ipAddress): Response
     {
+        if ($request->routeIs('proxy')) {
+            return redirect()->route('index');
+        }
+
         WebsiteIpWhitelist::updateOrCreate(
             ['ip_address' => $ipAddress],
         );
@@ -79,18 +87,17 @@ class VPNMiddleware
     /**
      * Throw a blacklist error.
      */
-    protected function throwBlacklistError(Request $request, string $ipAddress, string $message): Response
+    protected function throwBlacklistError(Request $request, Closure $next, string $ipAddress, string $message): Response
     {
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
+        if ($request->routeIs('proxy') || $request->routeIs('help-center.*') || $request->routeIs('logout')) {
+            return $next($request);
+        }
 
         WebsiteIpBlacklist::updateOrCreate(
             ['ip_address' => $ipAddress],
         );
 
-        return redirect()
-            ->route('login')
-            ->withErrors(['username' => $message]);
+        return redirect()->route('proxy')
+            ->withErrors(['message' => $message]);
     }
 }
