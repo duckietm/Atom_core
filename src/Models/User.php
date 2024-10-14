@@ -57,6 +57,7 @@ class User extends Authenticatable
         'look',
         'gender',
         'rank',
+        'rank_expires_at',
         'hidden_staff',
         'credits',
         'pixels',
@@ -96,6 +97,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'rank_expires_at' => 'datetime',
             'password' => 'hashed',
             'hidden_staff' => 'boolean',
         ];

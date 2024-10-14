@@ -28,6 +28,7 @@ class WebsiteShopArticle extends Model
         'color',
         'costs',
         'give_rank',
+        'rank_term',
         'credits',
         'duckets',
         'diamonds',
