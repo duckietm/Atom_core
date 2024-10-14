@@ -2,11 +2,11 @@
 
 use App\Http\Middleware\Authenticate;
 use Atom\Core\Http\Controllers\BannedController;
-use Atom\Core\Http\Controllers\ProxyController;
 use Atom\Core\Http\Controllers\BetaCodeController;
 use Atom\Core\Http\Controllers\ForgotPasswordController;
 use Atom\Core\Http\Controllers\LoginController;
 use Atom\Core\Http\Controllers\LogoutController;
+use Atom\Core\Http\Controllers\ProxyController;
 use Atom\Core\Http\Controllers\RegisterController;
 use Atom\Core\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
