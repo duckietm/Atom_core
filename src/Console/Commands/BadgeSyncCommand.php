@@ -4,7 +4,6 @@ namespace Atom\Core\Console\Commands;
 
 use Atom\Core\Models\Badge;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 
 use function Laravel\Prompts\progress;
 
@@ -34,20 +33,23 @@ class BadgeSyncCommand extends Command
         // Validate file path in configuration
         if (! $filePath) {
             $this->error('The configuration for the external texts file is missing.');
+
             return 1;
         }
 
-        // Attempt to read the file
+        // Attempt to read the file using the full path
         try {
-            $file = Storage::disk('static')->get($filePath);
+            $file = file_get_contents($filePath);
         } catch (\Exception $e) {
-            $this->error(sprintf('Error reading the file from disk: %s', $e->getMessage()));
+            $this->error(sprintf('Error reading the file from path: %s', $e->getMessage()));
+
             return 1;
         }
 
         // Handle missing or empty file
         if (! $file) {
-            $this->error(sprintf('The external texts file is empty or missing in %s.', Storage::disk('static')->path($filePath)));
+            $this->error(sprintf('The external texts file is empty or missing at %s.', $filePath));
+
             return 1;
         }
 
@@ -56,6 +58,7 @@ class BadgeSyncCommand extends Command
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             $this->error(sprintf('Error decoding JSON: %s', json_last_error_msg()));
+
             return 1;
         }
 
@@ -66,6 +69,7 @@ class BadgeSyncCommand extends Command
         // Handle empty badge data
         if ($badges->isEmpty()) {
             $this->info('No badges to sync.');
+
             return 0;
         }
 
@@ -102,6 +106,7 @@ class BadgeSyncCommand extends Command
             ));
         } catch (\Exception $e) {
             $this->error(sprintf('Error syncing badge "%s": %s', $code, $e->getMessage()));
+
             return false;
         }
     }
